@@ -47,17 +47,14 @@ class VisibilityMap(private val visibleCells: Array<BooleanArray>) {
         fun compute(asteroids: AsteroidMap, x: Int, y: Int) = VisibilityMap(
                 Array(asteroids.height) { iy ->
                     BooleanArray(asteroids.width) { ix ->
-                        //                    println("Testing pos $ix;$iy")
                         if (ix == x && iy == y) false
                         else {
                             if (asteroids[ix, iy]) {
                                 val dx = ix - x
                                 val dy = iy - y
                                 if (abs(dx) in 0..1 && abs(dy) in 0..1) {
-                                    //                                println("Ok! early")
                                     return@BooleanArray true
                                 }
-                                // Normalize vector
                                 val gcd = gcd(abs(dx), abs(dy))
                                 val vx = dx / gcd
                                 val vy = dy / gcd
@@ -71,13 +68,11 @@ class VisibilityMap(private val visibleCells: Array<BooleanArray>) {
                                 val upperY = max(y, iy)
 
                                 while (cx in lowerX..upperX && cy in lowerY..upperY) {
-                                    //                                println("Checking $cx;$cy for $ix;$iy: ${asteroids[cx, cy]}")
                                     if ((cx != ix || cy != iy) && asteroids[cx, cy]) return@BooleanArray false
                                     cy += vy
                                     cx += vx
                                 }
 
-                                //                            println("Ok !")
                                 true
                             } else false
                         }
